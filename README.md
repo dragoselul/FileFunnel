@@ -74,7 +74,7 @@ dotnet run --project FileFunnel
 
 ## Roadmap
 
-- 🛠️ Core: Complete MVP of funnel folder watcher and sorting engine. - I am here right now 
+- 🛠️ Core: Currently focused on completing the MVP of the funnel folder watcher and sorting engine.
 - 🔍 Duplicate Finder: Enhanced hash-based dedupe matching.  
 - 🗃️ Versioning: Git-like history for documents and rollback.  
 
