@@ -20,7 +20,7 @@
 
 ## Motivation
 
-### <b>Status</b>: Early development—currently in MVP stage.
+### **Status**: Early development—currently in MVP stage.
 
 I was drowning in a sea of duplicates and a messy file system on my external hard drive—forgetting I already had copies of files, scattering work across random folders. FileFunnel solves this by watching a central "dump" folder, detecting duplicates, and sorting everything into a user-defined folder structure. Now you can find what you need, when you need it, without clutter and confusion.
 
