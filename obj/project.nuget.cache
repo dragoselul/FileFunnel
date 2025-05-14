@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bqR/+fCErnE=",
+  "dgSpecHash": "gW1i1dFHw54=",
   "success": true,
   "projectFilePath": "/home/dragos/GIT/FileFunnel/FileFunnel.csproj",
   "expectedPackageFiles": [
@@ -32,7 +32,9 @@
     "/home/dragos/.nuget/packages/skiasharp.nativeassets.macos/2.88.9/skiasharp.nativeassets.macos.2.88.9.nupkg.sha512",
     "/home/dragos/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/skiasharp.nativeassets.webassembly.2.88.9.nupkg.sha512",
     "/home/dragos/.nuget/packages/skiasharp.nativeassets.win32/2.88.9/skiasharp.nativeassets.win32.2.88.9.nupkg.sha512",
+    "/home/dragos/.nuget/packages/system.codedom/10.0.0-preview.4.25258.110/system.codedom.10.0.0-preview.4.25258.110.nupkg.sha512",
     "/home/dragos/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
+    "/home/dragos/.nuget/packages/system.management/10.0.0-preview.4.25258.110/system.management.10.0.0-preview.4.25258.110.nupkg.sha512",
     "/home/dragos/.nuget/packages/tmds.dbus.protocol/0.20.0/tmds.dbus.protocol.0.20.0.nupkg.sha512"
   ],
   "logs": []
