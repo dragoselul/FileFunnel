@@ -40,7 +40,7 @@ public class WindowsHardwareScanner : HardwareScanner
             disk.Add(new PartitionInfo (
                 part["DeviceID"]?.ToString() ?? "",
                 Convert.ToInt64(part["Size"] ?? 0),
-                Convert.ToInt32(part["Bootable"] ?? 0),
+                Convert.ToBoolean(part["Bootable"] ?? false),
                 Convert.ToInt32(part["Index"] ?? 0),
                 part["Type"]?.ToString() ?? ""
             ));

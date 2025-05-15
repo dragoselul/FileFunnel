@@ -1,6 +1,6 @@
 using System;
 
-class File {
+public class FileModel {
     public string Name { get; set; }
     public string Path { get; set; }
     public string Type { get; set; }
@@ -9,7 +9,7 @@ class File {
     public DateTime ModifiedAt { get; set; }
     public string Author { get; set; }
 
-    public File(string name, string path, string type, long size, DateTime createdAt, DateTime modifiedAt, string author) {
+    public FileModel(string name, string path, string type, long size, DateTime createdAt, DateTime modifiedAt, string author) {
         Name = name;
         Path = path;
         Type = type;
