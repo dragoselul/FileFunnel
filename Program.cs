@@ -1,21 +1,37 @@
-﻿using Avalonia;
-using System;
+﻿namespace FileFunnel;
 
-namespace FileFunnel;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 
-sealed class Program
+internal class Program
 {
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
-    [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
+    public static void Main(string[] args)
+    {
+        var host = Host.CreateDefaultBuilder(args)
+            .ConfigureServices((ctx, services) =>
+            {
+                // Core services
+                // services.AddSingleton<IFileSorter, FileSorter>();
+                // services.AddSingleton<IDriveScanner, DriveScannerWorker>();
+                
+                // ViewModels
+                services.AddSingleton<MainWindowViewModel>();
+                
+                // Windows
+                services.AddSingleton<MainWindow>();
+            })
+            .Build();
 
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .WithInterFont()
-            .LogToTrace();
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, shutdownAfterMainWindowClosed: false, desktop =>
+        {
+            desktop.MainWindow = host.Services.GetRequiredService<MainWindow>();
+        });
+    }
+
+    public static AppBuilder BuildAvaloniaApp() =>
+        AppBuilder.Configure<App>()
+                  .UsePlatformDetect()
+                  .LogToTrace();
 }
