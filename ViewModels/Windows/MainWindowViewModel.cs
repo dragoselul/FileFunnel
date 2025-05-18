@@ -1,4 +1,4 @@
-﻿namespace FileFunnel.ViewModels;
+﻿namespace FileFunnel.ViewModels.Windows;
 
 public partial class MainWindowViewModel : ViewModelBase
 {

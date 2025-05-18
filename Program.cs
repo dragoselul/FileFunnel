@@ -1,9 +1,15 @@
-﻿namespace FileFunnel;
+﻿using Avalonia.Controls;
+using FileFunnel.ViewModels.Windows;
+using FileFunnel.Views.Windows;
+
+namespace FileFunnel;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using FileFunnel.ViewModels;
+using FileFunnel.Views;
 
 internal class Program
 {
@@ -18,16 +24,19 @@ internal class Program
                 
                 // ViewModels
                 services.AddSingleton<MainWindowViewModel>();
+                services.AddSingleton<DriveWindowViewModel>();
                 
                 // Windows
                 services.AddSingleton<MainWindow>();
+                services.AddSingleton<DriveWindow>();
             })
             .Build();
 
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, shutdownAfterMainWindowClosed: false, desktop =>
-        {
-            desktop.MainWindow = host.Services.GetRequiredService<MainWindow>();
-        });
+        // BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, desktop =>
+        // {
+        //     desktop.MainWindow = host.Services.GetRequiredService<MainWindow>();
+        // });
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
     }
 
     public static AppBuilder BuildAvaloniaApp() =>

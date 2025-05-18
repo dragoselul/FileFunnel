@@ -28,4 +28,21 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
     <PackageReference Include="System.Management" Version="10.0.0-preview.4.25258.110" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Windows\DriveWindow.axaml.cs">
+      <DependentUpon>DriveWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Windows\MainWindow.axaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="App.axaml.cs">
+      <DependentUpon>App.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\UserControls\DiskCard.axaml.cs">
+      <DependentUpon>DiskCard.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

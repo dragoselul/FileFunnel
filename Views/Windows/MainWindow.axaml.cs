@@ -1,11 +1,13 @@
 using Avalonia.Controls;
+using FileFunnel.ViewModels.Windows;
 
-namespace FileFunnel.Views;
+namespace FileFunnel.Views.Windows;
 
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
+        DataContext = new MainWindowViewModel();
     }
 }
