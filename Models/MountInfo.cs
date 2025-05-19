@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace StorageMedia;
+namespace FileFunnel.Models;
 
 /// <summary>
 /// A single mount point for a volume.

@@ -1,21 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Management;
-using StorageMedia;
 
 namespace FileFunnel.Models.HardwareService;
-
+#pragma warning disable CA1416
 public class WindowsHardwareScanner : IHardwareScanner
 {
-    public IEnumerable<DiskInfo> GetDisks()
+    private List<DiskInfo> Disks { get; set; }
+    public WindowsHardwareScanner()
+    {
+        Disks = new List<DiskInfo>();
+    }
+    
+    public List<DiskInfo> GetDisks()
+    {
+        return Disks;
+    }
+
+    public IHardwareScanner GetDisksFromSystem()
     {
         var list = new List<DiskInfo>();
         using var searcher = new ManagementObjectSearcher(
             "SELECT DeviceID, Model, SerialNumber, Size FROM Win32_DiskDrive");
-        
-        foreach (ManagementObject disk in searcher.Get())
+
+        foreach (var o in searcher.Get())
         {
-            list.Add(new DiskInfo (
+            var disk = (ManagementObject)o;
+            list.Add(new DiskInfo(
                 disk["Name"]?.ToString() ?? "Unknown",
                 disk["DeviceID"]?.ToString() ?? "",
                 disk["Model"]?.ToString() ?? "Unknown",
@@ -24,66 +35,83 @@ public class WindowsHardwareScanner : IHardwareScanner
                 disk["Status"]?.ToString() ?? "Unknown"
             ));
         }
-        return list;
+
+        return this;
     }
 
-    public DiskInfo GetPartitionsForDisk(DiskInfo disk)
+    public IHardwareScanner GetPartitionsForDisk()
     {
         // Associate Win32_DiskDrive -> Win32_DiskPartition
-        string query = 
-          "ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" + disk.DeviceId +
-          "'} WHERE AssocClass = Win32_DiskDriveToDiskPartition";
-        
-        using var searcher = new ManagementObjectSearcher(query);
-        foreach (ManagementObject part in searcher.Get())
+        foreach (var disk in Disks)
         {
-            disk.Add(new PartitionInfo (
-                part["DeviceID"]?.ToString() ?? "",
-                Convert.ToInt64(part["Size"] ?? 0),
-                Convert.ToBoolean(part["Bootable"] ?? false),
-                Convert.ToInt32(part["Index"] ?? 0),
-                part["Type"]?.ToString() ?? ""
-            ));
-        }
-        return disk;
-    }
-
-    public DiskInfo GetVolumesForDisk(DiskInfo disk)
-    {
-        // Associate Win32_DiskPartition -> Win32_LogicalDisk (volume)
-        foreach (var partition in disk.Partitions)
-        {
-            // Skip empty partitions
-            if (partition.Size == 0)
-                continue;
-
-            // Associate Win32_DiskPartition -> Win32_LogicalDisk
-            string query = 
-            "ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + partition.PartitionId +
-            "'} WHERE AssocClass = Win32_LogicalDiskToPartition";
+            // Associate Win32_DiskDrive -> Win32_DiskPartition
+            string query =
+                "ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" + disk.DeviceId +
+                "'} WHERE AssocClass = Win32_DiskDriveToDiskPartition";
 
             using var searcher = new ManagementObjectSearcher(query);
-            foreach (ManagementObject vol in searcher.Get())
+            foreach (var o in searcher.Get())
             {
-                var driveLetter = vol["DeviceID"]?.ToString() + "\\";  // e.g. "D:\"
-                var dri = new System.IO.DriveInfo(driveLetter);
-                disk.Add(new VolumeInfo (
-                    GetVolumeGuidViaWmi(driveLetter.TrimEnd('\\')),
-                    dri.DriveFormat,
-                    dri.TotalSize,
-                    dri.AvailableFreeSpace
+                var part = (ManagementObject)o;
+                disk.Add(new PartitionInfo(
+                    part["DeviceID"]?.ToString() ?? "",
+                    Convert.ToInt64(part["Size"] ?? 0),
+                    Convert.ToBoolean(part["Bootable"] ?? false),
+                    Convert.ToInt32(part["Index"] ?? 0),
+                    part["Type"]?.ToString() ?? ""
                 ));
             }
         }
-        return disk;
+
+        return this;
+    }
+
+    public IHardwareScanner GetVolumesForDisk()
+    {
+        foreach (var disk in Disks)
+        {
+            // Associate Win32_DiskPartition -> Win32_LogicalDisk (volume)
+            foreach (var partition in disk.Partitions)
+            {
+                // Skip empty partitions
+                if (partition.Size == 0)
+                    continue;
+
+                // Associate Win32_DiskPartition -> Win32_LogicalDisk
+                string query =
+                    "ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + partition.PartitionId +
+                    "'} WHERE AssocClass = Win32_LogicalDiskToPartition";
+
+                using var searcher = new ManagementObjectSearcher(query);
+                foreach (var o in searcher.Get())
+                {
+                    var vol = (ManagementObject)o;
+                    var driveLetter = vol["DeviceID"]?.ToString() + "\\"; // e.g. "D:\"
+                    var dri = new System.IO.DriveInfo(driveLetter);
+                    disk.Add(new VolumeInfo(
+                        GetVolumeGuidViaWmi(driveLetter.TrimEnd('\\')),
+                        dri.DriveFormat,
+                        dri.TotalSize,
+                        dri.AvailableFreeSpace
+                    ));
+                }
+            }
+        }
+
+        return this;
     }
 
     private static string GetVolumeGuidViaWmi(string driveLetter)
     {
         var q = $"SELECT DeviceID FROM Win32_Volume WHERE DriveLetter = '{driveLetter}:'";
         using var s = new ManagementObjectSearcher(q);
-        foreach (ManagementObject v in s.Get())
-            return v["DeviceID"]?.ToString();
+        foreach (var o in s.Get())
+        {
+            var v = (ManagementObject)o;
+            return v["DeviceID"]?.ToString() ?? "Unknown";
+        }
+
         return "Unknown";
     }
 }
+#pragma warning restore CA1416

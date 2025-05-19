@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using StorageMedia;
 
 namespace FileFunnel.Models.HardwareService;
 
@@ -7,7 +6,9 @@ namespace FileFunnel.Models.HardwareService;
 /// HardwareScanner is a class that scans the hardware and detects all the physical drives connected to the system.
 /// </summary>
 public interface IHardwareScanner {
-    IEnumerable<DiskInfo> GetDisks();
-    DiskInfo GetPartitionsForDisk(DiskInfo disk);
-    DiskInfo GetVolumesForDisk(DiskInfo disk);
+    
+    List<DiskInfo> GetDisks();
+    IHardwareScanner GetDisksFromSystem();
+    IHardwareScanner GetPartitionsForDisk();
+    IHardwareScanner GetVolumesForDisk();
 }

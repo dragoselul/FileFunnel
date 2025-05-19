@@ -1,4 +1,4 @@
-namespace StorageMedia;
+namespace FileFunnel.Models;
 /// <summary>
 /// A single volume/partition on a disk.
 /// </summary>

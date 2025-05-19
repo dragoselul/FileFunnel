@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -6,11 +7,13 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 using FileFunnel.ViewModels.Windows;
 using FileFunnel.Views.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FileFunnel;
 
 public partial class App : Application
 {
+    public static IServiceProvider ServiceProvider { get; set; } = null!;
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -23,10 +26,7 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow()
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            desktop.MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         }
 
         base.OnFrameworkInitializationCompleted();

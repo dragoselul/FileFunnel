@@ -1,6 +1,6 @@
-﻿namespace StorageMedia.Helpers;
+﻿using System.Runtime.InteropServices;
 
-using System.Runtime.InteropServices;
+namespace FileFunnel.Models.Helpers;
 
 public static class PlatformHelper
 {

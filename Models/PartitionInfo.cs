@@ -1,3 +1,5 @@
+namespace FileFunnel.Models;
+
 public class PartitionInfo
 {
     public string PartitionId   { get; private set; }  // e.g. "Disk #1, Partition #0"

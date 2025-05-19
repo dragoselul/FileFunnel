@@ -1,21 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using FileFunnel.Models;
 
 namespace FileFunnel.ViewModels.Windows;
 
 public class DriveWindowViewModel : ViewModelBase
 {
-    public List<DriveInfo> Drives { get; set; } = new List<DriveInfo>();
-    
-    public DriveWindowViewModel()
+    private readonly IDiskManagement _diskManagementService;
+    public DriveWindowViewModel(IDiskManagement _diskManagementService)
     {
-        Drives = new List<DriveInfo>();
-        foreach (var drive in DriveInfo.GetDrives())
-        {
-            if (drive.IsReady)
-            {
-                Drives.Add(drive);
-            }
-        }
+        this._diskManagementService = _diskManagementService;
+        this._diskManagementService.GetDisks();
     }
 }

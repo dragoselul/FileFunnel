@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StorageMedia;
+namespace FileFunnel.Models;
 
 /// <summary>
 /// Represents the physical disk (e.g. a USB stick, SSD, HDD).

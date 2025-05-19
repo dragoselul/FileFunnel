@@ -1,21 +1,31 @@
 ﻿using System.Collections.Generic;
-using StorageMedia;
 
 namespace FileFunnel.Models.HardwareService;
 
 public class LinuxHardwareScanner : IHardwareScanner
 {
-    public IEnumerable<DiskInfo> GetDisks()
+    private List<DiskInfo> Disks { get; set; }
+
+    public LinuxHardwareScanner(List<DiskInfo> disks)
+    {
+        Disks = disks;
+    }
+    public List<DiskInfo> GetDisks()
+    {
+        return Disks;
+    }
+
+    public IHardwareScanner GetDisksFromSystem()
     {
         throw new System.NotImplementedException();
     }
 
-    public DiskInfo GetPartitionsForDisk(DiskInfo disk)
+    public IHardwareScanner GetPartitionsForDisk()
     {
         throw new System.NotImplementedException();
     }
 
-    public DiskInfo GetVolumesForDisk(DiskInfo disk)
+    public IHardwareScanner GetVolumesForDisk()
     {
         throw new System.NotImplementedException();
     }

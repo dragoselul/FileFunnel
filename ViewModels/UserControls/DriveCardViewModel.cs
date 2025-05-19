@@ -19,12 +19,6 @@ public partial class DriveCardViewModel : ViewModelBase
 
     public DriveCardViewModel()
     {
-        InitializeViewModel();
-    }
-    
-    private void InitializeViewModel()
-    {
-        // Initialize properties or perform any setup needed for the view model
-        // This can include loading data, setting default values, etc.
+        
     }
 }
