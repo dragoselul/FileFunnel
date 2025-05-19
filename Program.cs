@@ -1,6 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
+using FileFunnel.Models.HardwareService;
 using FileFunnel.ViewModels.Windows;
 using FileFunnel.Views.Windows;
+using StorageMedia.Helpers;
 
 namespace FileFunnel;
 
@@ -18,29 +21,41 @@ internal class Program
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((ctx, services) =>
             {
-                // Core services
-                // services.AddSingleton<IFileSorter, FileSorter>();
-                // services.AddSingleton<IDriveScanner, DriveScannerWorker>();
-                
-                // ViewModels
-                services.AddSingleton<MainWindowViewModel>();
-                services.AddSingleton<DriveWindowViewModel>();
-                
-                // Windows
-                services.AddSingleton<MainWindow>();
-                services.AddSingleton<DriveWindow>();
-            })
-            .Build();
-
-        // BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, desktop =>
-        // {
-        //     desktop.MainWindow = host.Services.GetRequiredService<MainWindow>();
-        // });
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
+                ConfigureModel(services);
+                ConfigureViewModels(services);
+                ConfigureViews(services);
+            }).Build();
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 
-    public static AppBuilder BuildAvaloniaApp() =>
+    private static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
-                  .UsePlatformDetect()
-                  .LogToTrace();
+            .UsePlatformDetect()
+            .LogToTrace();
+
+    private static void ConfigureModel(IServiceCollection services)
+    {
+        if (PlatformHelper.IsWindows)
+            services.AddSingleton<IHardwareScanner, WindowsHardwareScanner>();
+        else if (PlatformHelper.IsLinux)
+            services.AddSingleton<IHardwareScanner, LinuxHardwareScanner>();
+        // else if (PlatformHelper.IsMac)
+        //     services.AddSingleton<HardwareScanner, MacHardwareScanner>();
+        else
+            throw new PlatformNotSupportedException("Unsupported platform");
+        Console.WriteLine("Platform: " +
+                          (PlatformHelper.IsWindows ? "Windows" : PlatformHelper.IsLinux ? "Linux" : "Mac"));
+    }
+
+    private static void ConfigureViewModels(IServiceCollection services)
+    {
+        services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<DriveWindowViewModel>();
+    }
+
+    private static void ConfigureViews(IServiceCollection services)
+    {
+        services.AddSingleton<MainWindow>();
+        services.AddSingleton<DriveWindow>();
+    }
 }

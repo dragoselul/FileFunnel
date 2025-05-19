@@ -41,4 +41,14 @@ public class DiskInfo
     {
         Volumes.Add(volume);
     }
+
+    public long GetFreeSpace()
+    {
+        long freeSpace = 0;
+        foreach (var volume in Volumes)
+        {
+            freeSpace += volume.FreeSpace;
+        }
+        return freeSpace;
+    }
 }

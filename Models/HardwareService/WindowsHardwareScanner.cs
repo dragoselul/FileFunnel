@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using StorageMedia;
-using System.Management;
 using System;
+using System.Collections.Generic;
+using System.Management;
+using StorageMedia;
 
-namespace HardwareService;
+namespace FileFunnel.Models.HardwareService;
 
-public class WindowsHardwareScanner : HardwareScanner
+public class WindowsHardwareScanner : IHardwareScanner
 {
-    public static IEnumerable<DiskInfo> GetDisks()
+    public IEnumerable<DiskInfo> GetDisks()
     {
         var list = new List<DiskInfo>();
         using var searcher = new ManagementObjectSearcher(
@@ -27,7 +27,7 @@ public class WindowsHardwareScanner : HardwareScanner
         return list;
     }
 
-    public static DiskInfo GetPartitionsForDisk(DiskInfo disk)
+    public DiskInfo GetPartitionsForDisk(DiskInfo disk)
     {
         // Associate Win32_DiskDrive -> Win32_DiskPartition
         string query = 
@@ -48,7 +48,7 @@ public class WindowsHardwareScanner : HardwareScanner
         return disk;
     }
 
-    public static DiskInfo GetVolumesForDisk(DiskInfo disk)
+    public DiskInfo GetVolumesForDisk(DiskInfo disk)
     {
         // Associate Win32_DiskPartition -> Win32_LogicalDisk (volume)
         foreach (var partition in disk.Partitions)

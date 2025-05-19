@@ -16,4 +16,15 @@ public partial class DriveCardViewModel : ViewModelBase
     public string NoOfPartitions { get; set; } = "2";
     
     public string DriveIconPath { get; set; } = "avares://FileFunnel/Assets/DriveIcons/ssd.png";
+
+    public DriveCardViewModel()
+    {
+        InitializeViewModel();
+    }
+    
+    private void InitializeViewModel()
+    {
+        // Initialize properties or perform any setup needed for the view model
+        // This can include loading data, setting default values, etc.
+    }
 }
