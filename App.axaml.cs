@@ -4,6 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
 using FileFunnel.ViewModels.Windows;
 using FileFunnel.Views.Windows;
@@ -21,15 +23,19 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (Design.IsDesignMode || ServiceProvider is null)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            base.OnFrameworkInitializationCompleted();
+            return;
         }
-
+        
+        var locator = ServiceProvider.GetRequiredService<IDataTemplate>();
+        DataTemplates.Add(locator);
+        var lifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+        lifetime.MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+        lifetime.MainWindow.DataContext = ServiceProvider.GetRequiredService<MainWindowViewModel>();
         base.OnFrameworkInitializationCompleted();
+        
     }
 
     private void DisableAvaloniaDataAnnotationValidation()

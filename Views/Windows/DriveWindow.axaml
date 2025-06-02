@@ -9,10 +9,12 @@
         x:DataType="vm:DriveWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="FileFunnel">
-
-
-    <Design.DataContext>
-        <vm:DriveWindowViewModel />
-    </Design.DataContext>
-    <card:DiskCard/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            <card:DiskCard Grid.Column="0"/>
+            <card:DiskCard Grid.Column="1"/>
+    </Grid>
 </Window>

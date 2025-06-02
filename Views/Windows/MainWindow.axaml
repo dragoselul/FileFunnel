@@ -1,18 +1,19 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:FileFunnel.ViewModels.Windows"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="clr-namespace:FileFunnel.ViewModels.Windows"
         x:Class="FileFunnel.Views.Windows.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="FileFunnel">
+        Title="FileFunnel" Width="800" Height="450">
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    <!-- <Button Content="Open Drive Window" -->
-    <!--             HorizontalAlignment="Center" -->
-    <!--             VerticalAlignment="Bottom" -->
-    <!--             Margin="0,0,0,20" -->
-    <!--             Click="OpenDriveWindow_Click"/> -->
+    <!-- if you’re relying on ViewLocator/DI, skip setting DataContext here -->
+    <!-- otherwise do it in code-behind -->
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="20">
+        <TextBlock Text="{Binding Greeting}" 
+                   HorizontalAlignment="Center" />
+        <Button Content="Open Drive Window"
+                Command="{Binding OpenDriveWindowCommand}" />
+    </StackPanel>
 </Window>

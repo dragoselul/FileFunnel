@@ -4,12 +4,12 @@ using FileFunnel.Models;
 
 namespace FileFunnel.ViewModels.Windows;
 
-public class DriveWindowViewModel : ViewModelBase
+public partial class DriveWindowViewModel : ViewModelBase
 {
     private readonly IDiskManagement _diskManagementService;
     public DriveWindowViewModel(IDiskManagement _diskManagementService)
     {
         this._diskManagementService = _diskManagementService;
-        this._diskManagementService.GetDisks();
+        // this._diskManagementService.GetDisks();
     }
 }

@@ -6,9 +6,9 @@ public class LinuxHardwareScanner : IHardwareScanner
 {
     private List<DiskInfo> Disks { get; set; }
 
-    public LinuxHardwareScanner(List<DiskInfo> disks)
+    public LinuxHardwareScanner()
     {
-        Disks = disks;
+        Disks = new List<DiskInfo>();
     }
     public List<DiskInfo> GetDisks()
     {

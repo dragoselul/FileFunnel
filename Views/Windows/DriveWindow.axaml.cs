@@ -9,6 +9,5 @@ public partial class DriveWindow : Window
     public DriveWindow()
     {
         InitializeComponent();
-        // DataContext = new DriveWindowViewModel();
     }
 }
